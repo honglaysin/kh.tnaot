@@ -1,108 +1,111 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Header from "../components/Header";
 
-const TOTAL_IMAGES = 53; // number of base images
-
 const Services: React.FC = () => {
-  const [modalImage, setModalImage] = useState<string>("");
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [lang, setLang] = useState<"en" | "cn">("en");
+  const [showGoUp, setShowGoUp] = useState<boolean>(false);
 
-  const openModal = (src: string) => {
-    setModalImage(src);
-    setIsModalOpen(true);
-  };
+  // Dynamic total images based on language
+  const totalImages = lang === "en" ? 55 : 53;
 
-  const closeModal = () => setIsModalOpen(false);
-
-  // Build ad images array
   const adImages = Array.from(
-    { length: TOTAL_IMAGES },
-    (_, i) => `/ads/page-${i + 1}.png`
+    { length: totalImages },
+    (_, i) => `/ads/ads-${lang}/page-${i + 1}.jpg`
   );
-  adImages.splice(35, 0, "/ads/page-35-2.png"); // <— insert extra image
+
+  // Show "Go Up" button after scrolling past the 3rd image
+  useEffect(() => {
+    const handleScroll = () => {
+      const thirdImageOffset =
+        document.getElementById("ad-image-3")?.offsetTop || 0;
+      setShowGoUp(window.scrollY > thirdImageOffset);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
 
   return (
     <>
       <Header />
-
       <main className="bg-gray-50 min-h-screen">
-        {/* Hero Section */}
-        <section className="bg-red-500">
-          <img
-            src="/ads/top.png"
-            alt="TNAOT Top Banner"
-            className="w-full object-cover"
-          />
-          <div className="container mx-auto px-4 py-12 grid grid-cols-1 md:grid-cols-2 items-center gap-6">
-            <div className="text-white space-y-4">
-              <h1 className="text-3xl md:text-4xl font-bold">
+
+        {/* Language Toggle + Banner */}
+       <section className="bg-gradient-to-r from-[#E53E3E] to-[#FF6B6B] text-white py-8">
+          <div className="w-[100%] mx-auto px-4 flex items-center justify-between">
+            
+            {/* Left: empty space to balance layout */}
+            <div className="flex-1"></div>
+
+            {/* Center: Title & Paragraph */}
+            <div className="flex-1 text-center">
+              <h1 className="text-3xl md:text-4x1 font-bold mb-2">
                 TNAOT Media Advertising Solutions
               </h1>
               <p className="text-lg md:text-xl">
-                Multi-channel precision targeting of local users for brand
-                exposure and efficient conversion
+                Multi-channel precision targeting of local users for brand exposure and efficient conversion
               </p>
-              <div className="bg-blue-900 p-6 rounded-md inline-block">
-                <h2 className="text-2xl font-bold">ADVERTISING</h2>
-                <p className="text-xl">SOLUTION</p>
-                <p className="text-sm mt-2">2025 / 07 / 01 – 2025 / 12 / 31</p>
-              </div>
             </div>
-            <div className="w-full">
-              <img
-                src="/ads/sec-top.png"
-                alt="TNAOT App Building"
-                className="w-full rounded-md object-cover"
-              />
-            </div>
-          </div>
-        </section>
 
-        {/* Ads Grid */}
-        <section className="container mx-auto px-4 py-16">
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-6">
-            {adImages.map((src, index) => (
-              <div
-                key={index}
-                className="bg-white rounded-xl shadow hover:shadow-xl transition cursor-pointer overflow-hidden group"
-                onClick={() => openModal(src)}
-              >
-                <img
-                  src={src}
-                  alt={`Advertisement ${index + 1}`}
-                  className="w-full h-56 object-cover group-hover:scale-105 transition-transform duration-300"
-                />
-                <div className="p-4 text-center">
-                  {/* <p className="text-sm font-medium text-gray-700">
-                    Advertisement #{index + 1}
-                  </p> */}
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        {/* Modal */}
-        {isModalOpen && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-80">
-            <div className="relative bg-white rounded-lg p-4 max-w-6xl w-full max-h-[90vh] overflow-auto">
-              {/* Close button */}
+            {/* Right: Language Toggle */}
+            <div className="flex-1 flex justify-end">
               <button
-                className="absolute top-2 right-2 text-red-600 text-3xl font-bold"
-                onClick={closeModal}
+                className={`px-10 py-2 rounded-full text-sm font-medium border border-white bg-transparent text-white hover:bg-white hover:text-red-500 transition-colors`}
+                onClick={() => setLang(lang === "en" ? "cn" : "en")}
               >
-                ×
+                {lang === "en" ? "简体中文" : "English"}
               </button>
-
-              {/* The big image */}
-              <img
-                src={modalImage}
-                alt="Ad preview"
-                className="w-full h-auto max-h-[85vh] object-contain rounded-md mb-2"
-              />
             </div>
           </div>
+        </section>
+
+        {/* Hero Section */}
+        <section className="bg-white mt-5">
+          <div className="w-[75%] mx-auto">
+            <img
+              src={`/ads/ads-${lang}/page-1.jpg`}
+              alt="Hero"
+              className="w-full object-cover shadow"
+            />
+          </div>
+        </section>
+
+        {/* Ads Images */}
+        <section className="bg-white">
+          {adImages.slice(1).map((src, index) => (
+            <div
+              key={index}
+              id={index === 2 ? "ad-image-2" : undefined} // mark the 3rd image
+              className="w-[75%] mx-auto"
+            >
+              <img
+                src={src}
+                alt={`Advertisement ${index + 2}`}
+                className="w-full object-cover shadow-lg"
+              />
+            </div>
+          ))}
+        </section>
+
+        {/* Go Up Button */}
+        {showGoUp && (
+          <button
+            onClick={scrollToTop}
+            className="fixed bottom-8 right-8  text-white px-5 py-3 rounded-full shadow-lg hover:bg-[#FF6B6B] transition-all text-lg"
+          >
+            <img src="/logo/up-icon.png" 
+            className="w-6 h-6 mx-auto"
+            alt="" />
+            <img src="/logo/logo.png" 
+            className="w-6 h-6 mx-auto"
+            alt="" />
+          </button>
         )}
+
       </main>
     </>
   );
