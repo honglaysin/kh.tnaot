@@ -54,12 +54,13 @@ const Services: React.FC = () => {
             {/* Right: Language Toggle */}
             <div className="flex-1 flex justify-end">
               <button
-                className={`px-10 py-2 rounded-full text-sm font-medium border border-white bg-transparent text-white hover:bg-white hover:text-red-500 transition-colors`}
+                className="px-4 sm:px-6 md:px-10 py-2 rounded-full text-sm md:text-base font-medium border border-white bg-transparent text-white hover:bg-white hover:text-red-500 transition-colors whitespace-nowrap"
                 onClick={() => setLang(lang === "en" ? "cn" : "en")}
               >
                 {lang === "en" ? "简体中文" : "English"}
               </button>
             </div>
+
           </div>
         </section>
 
