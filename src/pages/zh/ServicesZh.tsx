@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from "react";
-import Header from "../components/Header";
-import Footer from "../components/Footer";
+import Header from "../../components/Header";
+import Footer from "../../components/Footer";
 
-const Services: React.FC = () => {
+const ServicesZh: React.FC = () => {
   const [showGoUp, setShowGoUp] = useState<boolean>(false);
 
-  const totalImages = 55;
+  const totalImages = 53;
   const adImages = Array.from(
     { length: totalImages },
-    (_, i) => `/ads/ads-en/page-${i + 1}.jpg`
+    (_, i) => `/ads/ads-cn/page-${i + 1}.jpg`
   );
 
   useEffect(() => {
@@ -33,10 +33,10 @@ const Services: React.FC = () => {
         <section className="bg-gradient-to-r from-[#E53E3E] to-[#FF6B6B] text-white py-8">
           <div className="w-[100%] mx-auto px-4 text-center">
             <h1 className="text-3xl md:text-4xl font-bold mb-2">
-              TNAOT Media Advertising Solutions
+              TNAOT 媒体广告解决方案
             </h1>
             <p className="text-lg md:text-xl">
-              Multi-channel precision targeting of local users for brand exposure and efficient conversion
+              精准多渠道投放，覆盖本地用户，实现品牌曝光与高效转化
             </p>
           </div>
         </section>
@@ -44,7 +44,7 @@ const Services: React.FC = () => {
         {/* Hero Image */}
         <section className="bg-white mt-5">
           <div className="w-[75%] mx-auto">
-            <img src="/ads/ads-en/page-1.jpg" alt="Hero" className="w-full object-cover shadow" />
+            <img src="/ads/ads-cn/page-1.jpg" alt="Hero" className="w-full object-cover shadow" />
           </div>
         </section>
 
@@ -73,9 +73,8 @@ const Services: React.FC = () => {
 
       </main>
     </>
-      
   );
   <Footer />
 };
 
-export default Services;
+export default ServicesZh;
