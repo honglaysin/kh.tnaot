@@ -79,10 +79,11 @@ const Header: React.FC = () => {
 
             <button
               onClick={toggleLang}
-              className="px-3 py-2 rounded-md border text-sm"
+              className="px-4 py-2 rounded text-white bg-gradient-to-r from-[#E53E3E] to-[#FF6B6B] hover:opacity-90 transition"
             >
               {lang === "en" ? "简体中文" : "English"}
             </button>
+
           </nav>
 
           {/* Mobile Menu Button */}
