@@ -8,12 +8,27 @@ type LangContextType = {
 
 const LangContext = createContext<LangContextType | undefined>(undefined);
 
+const getInitialLang = (): Lang => {
+  try {
+    const savedLang = localStorage.getItem('lang');
+
+    // Ignore stale or invalid values left by older localhost applications.
+    return savedLang === 'zh' ? 'zh' : 'en';
+  } catch {
+    // The application should still render when browser storage is unavailable.
+    return 'en';
+  }
+};
+
 export const LangProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  // load previous language from localStorage (optional)
-  const [lang, setLang] = useState<Lang>(() => (localStorage.getItem('lang') as Lang) || 'en');
+  const [lang, setLang] = useState<Lang>(getInitialLang);
 
   useEffect(() => {
-    localStorage.setItem('lang', lang);
+    try {
+      localStorage.setItem('lang', lang);
+    } catch {
+      // Storage can be blocked by browser privacy settings.
+    }
   }, [lang]);
 
   return (

@@ -41,7 +41,8 @@ const Footer = () => {
     },
   };
 
-  const t = texts[lang]; // current language
+  // Keep the layout renderable even if stale browser state contains an old value.
+  const t = texts[lang] ?? texts.en;
 
   return (
     <footer className="bg-gradient-to-r from-[#E53E3E] to-[#FF6B6B] text-white py-12 px-4 md:px-8 lg:px-16">
